@@ -16,9 +16,19 @@
         </li>
     </ul>
     <script type="text/javascript">
+
+
+
         var app = angular.module("NamesApp", ["firebase"]);
 
         app.controller("NamesCtrl", function ($scope, $firebaseArray) {
+            var provider = new firebase.auth.GoogleAuthProvider();
+ provider.addScope(‘profile’);
+ provider.addScope(‘email’);
+ provider.addScope(‘https://www.googleapis.com/auth/plus.me');
+ firebase.auth().signInWithPopup(provider);
+
+
             var ref = new Firebase("https://ionic-chat-app-2100b.firebaseio.com/names");
             // create a synchronized array
             $scope.names = $firebaseArray(ref);

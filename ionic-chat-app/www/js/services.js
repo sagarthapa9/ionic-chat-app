@@ -36,27 +36,39 @@ angular.module('chatapp.services', [])
             }
         };
     }])
+.factory('FBFactory', ['$firebaseAuth', '$firebaseArray', 'FBURL', 'Utils',
+    function ($firebaseAuth, $firebaseArray, FBURL, Utils) {
+        //// Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyBtC_wDuep_HbQBbZe102-tbxqVI_cF3eY",
+            authDomain: "ionic-chat-app-2100b.firebaseapp.com",
+            databaseURL: "https://ionic-chat-app-2100b.firebaseio.com",
+            projectId: "ionic-chat-app-2100b",
+            storageBucket: "ionic-chat-app-2100b.appspot.com",
+            messagingSenderId: "761102870726"
+        };
+        firebase.initializeApp(config);
+        return {
+            auth: function () {
+              var FBRef = firebase.database().ref();
+              return $firebaseAuth();
+            },
+            olUsers: function () {
+                var olUsersRef = firebase.database().ref('onlineUsers');
+                return $firebaseArray(olUsersRef);
+            },
+            chatBase: function () {
+                var chatRef = firebase.database().ref().child("chats");
+                return $firebaseArray(chatRef);
+            },
+            chatRef: function (loggedInUser, OtherUser) {
+                var chatRef = firebase.database().ref('chats/chat_' + Utils.getHash(OtherUser, loggedInUser));
+                return $firebaseArray(chatRef);
+            }
+        };
+    }
+])
 
-.factory('FBFactory', ['$firebaseAuth', '$firebaseArray', 'FBURL', 'Utils', function ($firebaseAuth, $firebaseArray, FBURL, Utils) {
-    return {
-        auth: function () {
-            var FBRef = new Firebase(FBURL);
-            return $firebaseAuth(FBRef);
-        },
-        olUsers: function () {
-            var olUsersRef = new Firebase(FBURL + 'onlineUsers');
-            return $firebaseArray(olUsersRef);
-        },
-        chatBase: function () {
-            var chatRef = new Firebase(FBURL + 'chats');
-            return $firebaseArray(chatRef);
-        },
-        chatRef: function (loggedInUser, OtherUser) {
-            var chatRef = new Firebase(FBURL + 'chats/chat_' + Utils.getHash(OtherUser, loggedInUser));
-            return $firebaseArray(chatRef);
-        }
-    };
-}])
 
 .factory('UserFactory', ['LocalStorage', function (LocalStorage) {
     var userKey = 'user',
