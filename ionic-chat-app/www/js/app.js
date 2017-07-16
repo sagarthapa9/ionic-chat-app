@@ -109,7 +109,6 @@ angular.module('IoniChatApp', ['ionic', 'chatapp.controllers', 'chatapp.services
               }
           
       })
-
     .state('tab.account', {
         url: '/account',
         cache: false,

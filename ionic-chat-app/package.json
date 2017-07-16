@@ -22,5 +22,8 @@
     "cordova-plugin-inappbrowser",
     "cordova-plugin-media-capture"
   ],
-  "cordovaPlatforms": []
+  "cordovaPlatforms": [
+    "ios",
+    "android"
+  ]
 }
